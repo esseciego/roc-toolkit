@@ -229,11 +229,7 @@ void Depacketizer::update_packet_(FrameInfo& info) {
             break;
         }
 
-        roc_log(LogDebug, "depacketizer: dropping late packet: ts=%lu pkt_ts=%lu",
-                (unsigned long)stream_ts_, (unsigned long)pkt_timestamp);
-
         n_dropped++;
-
         payload_decoder_.end();
     }
 
@@ -326,6 +322,8 @@ void Depacketizer::report_stats_() {
     const double loss_ratio =
         total_samples != 0 ? (double)missing_samples_ / total_samples : 0.;
 
+    roc_log(LogDebug, "depacketizer: dropped=%u processed=%u", (unsigned) missing_samples_,
+            (unsigned) packet_samples_);
     roc_log(LogDebug, "depacketizer: ts=%lu loss_ratio=%.5lf", (unsigned long)stream_ts_,
             loss_ratio);
 }
